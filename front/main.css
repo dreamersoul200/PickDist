@@ -1,13 +1,77 @@
+/* Reset code */
+
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
 }
 
+html, body {
+    height: 100%;
+}
+
+/* Map CSS */
 #map {
     height: 100%;
 }
 
-html, body {
+/* Personal CSS */
+body {
+    background-color: #4496ff;
+    position: relative;
+}
+
+.container {
+    width: 80%;
+    height: 80%;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    display: flex;
+    flex-direction: row;
+    background-color: #3185f0;
+    border-radius: 15px;
+    overflow: hidden;
+}
+
+.left {
+    width: 50%;
     height: 100%;
+    font-family: 'Merriweather', serif;
+    color: black;
+    padding: 40px;
+}
+.right {
+    width: 50%;
+    height: 100%;
+}
+
+.label {
+    font-size: 14px;
+}
+
+input {
+    border-radius: 2px;
+    border: none;
+    display: block;
+    width: 100%;
+    padding: 10px 20px;
+    margin: 5px 0;
+    background-color: white;
+}
+
+#calcular {
+    background-color: #30e3ca;
+    font-weight: bold;
+    margin: 15px auto;
+    width: 200px;
+    height: 40px;
+    font-size: 18px;
+    text-align: center;
+    display: block;
+    border: none;
+    border-radius: 20px;
+    box-shadow: none;
+    cursor: pointer;
 }

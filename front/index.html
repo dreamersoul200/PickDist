@@ -3,14 +3,38 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PickDist</title>
+    <title>PickDist 💩💩💩</title>
+    <link href="https://fonts.googleapis.com/css?family=Merriweather:400,700&display=swap" rel="stylesheet"> 
     <link rel="stylesheet" href="main.css">
 </head>
 <body>
-    <div id="map"></div>
+    <div class="container">
+        <div class="left">
+            <p class="label">Dirección</p>
+            <input type="text" name="direccion" id="direction" placeholder="Ingresa una dirección">
+            <p class="label">País</p>
+            <input type="text" name="pais" id="pais">
+            <p class="label">Ciudad</p>
+            <input type="text" name="ciudad" id="ciudad">
+            <p class="label">Provincia</p>
+            <input type="text" name="provincia" id="provincia">
+            <button type="submit" id="calcular">Calcular</button>
+            <p class="label">Coordenadas</p>
+            <input type="text" name="latlng" id="latlng" disabled>
+            <p class="label">Distancia (m)</p>
+            <input type="text" name="dist" id="dist" disabled>
+        </div>
+        <div class="right">
+            <div id="map"></div>
+        </div>
+    </div>
+
+    <div id="pac-container">
+        <input type="text" id="pac-input" placeholder="Ingresa una dirección">
+    </div>
 
     <script src="main.js"></script>
-    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAoHTTw-3Vhe--LW7m7byD-NfFgmBElN1k&libraries=drawing&callback=initMap"
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAoHTTw-3Vhe--LW7m7byD-NfFgmBElN1k&libraries=drawing,places&callback=initMap&language=es-ES"
     async defer></script>
 </body>
 </html>
