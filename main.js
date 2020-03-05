@@ -37,6 +37,9 @@ function initMap() {
     });
     */
 
+    // Distance matrix API
+    const service = new google.maps.DistanceMatrixService();
+
     //Selecciona el contenedor y input del autocompletado
     const pacContainer = document.getElementById('pac-container');
     const input = document.getElementById('pac-input');
@@ -46,6 +49,16 @@ function initMap() {
 
     //Inicia el autocomplete
     const autocomplete = new google.maps.places.Autocomplete(input);
+    //Setteando las restricciones para resultados de busqueda solo por el centro de lima
+    autocomplete.setOptions({
+        bounds: {
+            north: -11,
+            south: -13,
+            west: -78,
+            east: -76
+        },
+        strictBounds: true
+    });
 
     const marker = new google.maps.Marker({
         draggable: true,
@@ -57,10 +70,37 @@ function initMap() {
         }
     });
 
+    //Define los ids de los componentes para rellenar el form
+    const componentForm = {
+        street_number: 'short_name',
+        route: 'long_name',
+        locality: 'long_name',
+        administrative_area_level_1: 'short_name',
+        country: 'long_name'
+    };
+
     autocomplete.addListener('place_changed', () => {
+        console.log(autocomplete.getBounds());
         marker.setVisible(false);
 
         const place = autocomplete.getPlace();
+
+        // Borra los respectivos forms y los desabilita
+        for(let component in componentForm) {
+            if(document.getElementById(component)) {
+                document.getElementById(component).value = '';
+                document.getElementById(component).disabled = true;
+            }
+        }
+
+        // Autocomplete para cada casillero del form de la direccion
+        for (let i = 0; i < place.address_components.length; i++) {
+            let addressType = place.address_components[i].types[0];
+            if (componentForm[addressType] && document.getElementById(addressType)) {
+                let val = place.address_components[i][componentForm[addressType]];
+                document.getElementById(addressType).value = val;
+            }
+        }
 
         if(!place.geometry) {
             window.alert('Fallo en el request o la direccion no es valida!');
@@ -76,8 +116,7 @@ function initMap() {
 
         marker.setPosition(place.geometry.location);
         marker.setVisible(true);
-        // Imprime el lugar
-        console.log(place.geometry.location.lat());
+
     });
 
 
@@ -87,4 +126,32 @@ function initMap() {
         console.log(position.lat(), position.lng());
     });
 
+    // Muestra las coordenadas y la distancia
+    const submit = document.getElementById('calcular');
+    const coordinates = document.getElementById('latlng');
+    const distance = document.getElementById('distance');
+
+    const origin = {
+        lat: -11.892023,
+        lng: -77.044567
+    }
+
+    submit.addEventListener('click', () => {
+        const destiny = {
+            lat: marker.position.lat(),
+            lng: marker.position.lng()
+        };
+        coordinates.value = destiny.lat + ' | ' + destiny.lng;
+        service.getDistanceMatrix({
+            origins: [origin],
+            destinations: [destiny],
+            travelMode: 'DRIVING'
+        }, (response, status) => {
+            if(status == 'OK') {
+                distance.value = response.rows[0].elements[0].distance.text;
+            } else {
+                alert('Ha ocurrido un error, intente de nuevo!');
+            }
+        });
+    });
 }
